@@ -5,17 +5,17 @@ from datetime import datetime, timezone
 
 from fastapi import FastAPI
 
-app = FastAPI(title="OpenShift DevOps Demo", version="2.0.0")
+app = FastAPI(title="OpenShift DevOps Demo", version="3.0.0")
 
 START_TIME = datetime.now(timezone.utc)
 
-VERSION = "2.0.0"
+VERSION = "3.0.0"
 
 
 @app.get("/")
 def root():
     return {
-        "message": "Hello from my CI/CD pipeline!",
+        "message": "Deployed automatically by my CI/CD pipeline!",
         "hostname": socket.gethostname(),
         "version": VERSION,
     }
