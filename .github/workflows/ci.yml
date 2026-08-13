@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -29,3 +29,18 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t openshift-devops-demo .
+
+  deploy:
+    needs: [test, docker]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install oc CLI
+        uses: redhat-actions/oc-installer@v1
+
+      - name: Log in to OpenShift
+        run: oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ secrets.OPENSHIFT_SERVER }}
+
+      - name: Trigger build and deploy
+        run: |
+          oc project moha2552005-dev
+          oc start-build openshift-devops-demo --follow
